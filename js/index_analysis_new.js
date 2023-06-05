@@ -409,7 +409,7 @@ $(document).ready(function () {
 
   $.ajaxSetup({ async: false }); // to stop async
 
-  user = "dknainx@gmail.com"
+  user = "dknaix@gmail.com"
 
   abc = "";
   function Auth_User(auth) {
