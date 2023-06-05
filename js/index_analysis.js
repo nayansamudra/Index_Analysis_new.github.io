@@ -409,8 +409,6 @@ $(document).ready(function () {
 
   $.ajaxSetup({ async: false }); // to stop async
 
-  user = "dknginx@gmail.com"
-
   abc = "";
   function Auth_User(auth) {
     $.post(
