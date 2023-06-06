@@ -1,9 +1,10 @@
-root = "https://students.tradingcafeindia.com/tc_indicator"
+root = "https://apii.tradingcafeindia.com/api"
+root_dhan = "https://tredcode.tradingcafeindia.com/dhan"
 
 // Check Access API
 function call_check_access_API(user) {
   try {
-    $.post("https://tredcode.tradingcafeindia.com/dhan/check_access", { email: user }, function (data, status) {
+    $.post(root_dhan + "/check_access", { email: user }, function (data, status) {
       Check_Access_data = data;
     }
     ).fail(function (response) {
@@ -838,8 +839,6 @@ $(document).ready(function () {
 
   $.ajaxSetup({ async: false }); // to stop async
 
-  user = "dknaix@gmail.com"
-
   abc = "";
   function Auth_User(auth) {
     $.post(
@@ -1167,7 +1166,6 @@ $(document).ready(function () {
   counter_for_donut_chart = true
 
   call_INDEX_OI_CHANGE_API(ts1, ts2, "NIFTY 50", Nifty_exp_1, user, abc)
-  // Index_OI_Change_data = {1685936700.0 : {'NFO:NIFTY2360818100CE': 1418, 'NFO:NIFTY2360818100PE': 67153, 'NFO:NIFTY2360818150CE': 497, 'NFO:NIFTY2360818150PE': 38517, 'NFO:NIFTY2360818200CE': 4853}}
   OI_Compass("NIFTY 50")
   Changes_in_Put_Call()
 

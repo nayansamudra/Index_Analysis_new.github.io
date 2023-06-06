@@ -3,15 +3,12 @@
 .bg-color {
   background: #1c1c1c;
 }
-
 .text-light {
   color: #f8f9fa !important;
 }
-
 .rounded {
   border-radius: 8px !important;
 }
-
 .go_btn {
   width: 120px;
   color: lightgreen;
@@ -19,48 +16,37 @@
   cursor: pointer;
   transition: 0.3s;
 }
-
 .go_btn:hover {
   box-shadow: 0 0 10px #00d3c1 !important;
 }
-
 .gb_active {
   color: #00d3c1 !important;
-  /* border: 1px solid #1C1C1C; */
   box-shadow: 0 0 10px #00d3c1 !important;
 }
-
 .bg-faint {
   background-color: #2e2e2e !important;
   color: #ffbd5a;
 }
-
 .text-left {
   text-align: left !important;
 }
-
 .divider {
   color: white;
 }
-
 .apexcharts-yaxis-label tspan {
   fill: white;
 }
-
 .apexcharts-xaxis-label tspan {
   fill: white;
 }
-
 .apexcharts-title-text {
   fill: white;
 }
-
 @media (max-width: 850px) {
   #Expiry {
     width: 120px !important;
   }
 }
-
 @media (max-width: 768px) {
   #Expiry_Date {
     padding-top: 15px !important;
@@ -76,7 +62,6 @@
     height: 50px !important;
   }
 }
-
 @media (max-width: 400px) {
   #OTM_ONLY span {
     font-size: 14px !important;
@@ -132,11 +117,9 @@ Apexchart
 .apexcharts-menu-item {
   color: #1c1c1c !important;
 }
-
 .apexcharts-tooltip.apexcharts-theme-light {
   color: #1c1c1c !important;
 }
-
 .m-1 {
   margin: 0.25rem !important;
 }
@@ -149,13 +132,6 @@ Apexchart
     margin-left: 0 !important;
   }
 }
-
-/* .cust_legend_heading::before {
-  position: relative;
-  bottom: -3px;
-  content: "•";
-  font-size: 30px;
-} */
 #cust_legend_1_1,
 #cust_legend_2_1::before {
   color: #00d3c0;
@@ -164,45 +140,40 @@ Apexchart
 #cust_legend_2_2::before {
   color: #ff5253;
 }
-
 .cust_legend_value {
   background-color: grey;
   padding: 1% 7%;
   border-radius: 15px;
   font-weight: bold;
 }
-
 .h4 {
   font-size: 1.125rem;
 }
-
 .h3 {
   font-size: 1.525rem;
 }
-
 @media (min-width: 800px) {
   .donutchart {
     min-height: 350px !important;
   }
 }
-
 @media (max-width: 576px) {
-  .Mobile_View{
+  .Mobile_View {
     display: block !important;
   }
-  .Laptop_View{
+  .Laptop_View {
     display: none !important;
   }
-  .h4, .pcr_net{
+  .h4,
+  .pcr_net {
     font-size: 1rem;
   }
 }
-
 @media (min-width: 576px) {
-  .Mobile_View{
+  .Mobile_View {
     display: none !important;
   }
-  .Laptop_View{
+  .Laptop_View {
     display: block !important;
   }
 }
