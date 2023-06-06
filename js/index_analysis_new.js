@@ -146,135 +146,136 @@ function NIFTY_50_Open_Intrest_Tracker(script) {
 
 // Calculation for data of OI Compass
 function OI_Compass(script) {
-  if (Index_OI_Change_data != 0) {
-
-    let array_2 = Object.values(Index_OI_Change_data);
-    var commonKeys = Object.keys(array_2[0]);
-    // Get the common keys from all dictionaries in the array
-    var commonKeys = array_2.reduce(function (keys, obj) {
-      return Object.keys(obj).filter(function (key) {
-        return keys.includes(key);
+  if (Index_OI_Change_data != 0 && Index_OI_Change_data != "Err Ts") {
+    if (Object.keys(Index_OI_Change_data).length > 1) {
+      let array_2 = Object.values(Index_OI_Change_data);
+      var commonKeys = Object.keys(array_2[0]);
+      // Get the common keys from all dictionaries in the array
+      var commonKeys = array_2.reduce(function (keys, obj) {
+        return Object.keys(obj).filter(function (key) {
+          return keys.includes(key);
+        });
+      }, Object.keys(array_2[0]));
+      // Perform intersection for each dictionary in the array
+      Index_OI_final_Change_data = array_2.map(function (obj) {
+        var intersection = {};
+        commonKeys.forEach(function (key) {
+          if (key in obj) {
+            intersection[key] = obj[key];
+          }
+        });
+        return intersection;
       });
-    }, Object.keys(array_2[0]));
-    // Perform intersection for each dictionary in the array
-    Index_OI_final_Change_data = array_2.map(function (obj) {
-      var intersection = {};
-      commonKeys.forEach(function (key) {
-        if (key in obj) {
-          intersection[key] = obj[key];
+
+
+      let array = Object.keys(Object.values(Index_OI_final_Change_data)[0])
+      let processedArray = array.slice(0, array.length - 1);
+      let newArray = $.map(processedArray, function (element) {
+        if (script == "NIFTY 50") {
+          return element.slice(14, -2);
+        }
+        else if (script == "NIFTY BANK") {
+          return element.slice(18, -2);
+        }
+        else if (script == "NIFTY FIN SERVICE") {
+          return element.slice(17, -2);
         }
       });
-      return intersection;
-    });
+      let uniqueArray = $.unique(newArray);
+      x_axis_categories_OI_Compass = uniqueArray
+
+      let my_array = x_axis_categories_OI_Compass;
+      let reversed_array = $([].concat(my_array)).toArray().reverse();
+      x_axis_categories_OI_Compass = reversed_array
+
+      let array_1 = Object.values(Index_OI_final_Change_data)
+      Diff_Result = {};
+      for (let key in array_1[0]) {
+        if (array_1[0].hasOwnProperty(key) && array_1[1].hasOwnProperty(key)) {
+          let diff = array_1[1][key] - array_1[0][key];
+          Diff_Result[key] = diff;
+        }
+      }
 
 
-    let array = Object.keys(Object.values(Index_OI_final_Change_data)[0])
-    let processedArray = array.slice(0, array.length - 1);
-    let newArray = $.map(processedArray, function (element) {
-      if (script == "NIFTY 50") {
-        return element.slice(14, -2);
-      }
-      else if (script == "NIFTY BANK") {
-        return element.slice(18, -2);
-      }
-      else if (script == "NIFTY FIN SERVICE") {
-        return element.slice(17, -2);
-      }
-    });
-    let uniqueArray = $.unique(newArray);
-    x_axis_categories_OI_Compass = uniqueArray
+      let Dict = Diff_Result
+      CE_array_OI_Compass = [];
+      PE_array_OI_Compass = [];
 
-    let my_array = x_axis_categories_OI_Compass;
-    let reversed_array = $([].concat(my_array)).toArray().reverse();
-    x_axis_categories_OI_Compass = reversed_array
+      $.each(Dict, function (key, value) {
+        if (key.indexOf("CE") !== -1) {
+          CE_array_OI_Compass.push(value);
+        } else if (key.indexOf("PE") !== -1) {
+          PE_array_OI_Compass.push(value);
+        }
+      });
 
-    let array_1 = Object.values(Index_OI_final_Change_data)
-    Diff_Result = {};
-    for (let key in array_1[0]) {
-      if (array_1[0].hasOwnProperty(key) && array_1[1].hasOwnProperty(key)) {
-        let diff = array_1[1][key] - array_1[0][key];
-        Diff_Result[key] = diff;
-      }
+      let my_array_1 = CE_array_OI_Compass;
+      let reversed_array_1 = $([].concat(my_array_1)).toArray().reverse();
+      CE_array_OI_Compass = reversed_array_1
+
+      let my_array_2 = PE_array_OI_Compass;
+      let reversed_array_2 = $([].concat(my_array_2)).toArray().reverse();
+      PE_array_OI_Compass = reversed_array_2
+
+      OI_Compass_atm_1 = `${Object.values(Index_OI_Change_data)[0]['atm']}`
+      // OI_Compass_atm_2 = `${Object.values(Index_OI_Change_data)[1]['atm']}`
+      // if (OI_Compass_atm_1 == OI_Compass_atm_2) {
+      //   OI_Compass_atm_Final = OI_Compass_atm_1
+      // } else {
+      OI_Compass_atm_Final = OI_Compass_atm_1
+      // }
     }
-
-
-    let Dict = Diff_Result
-    CE_array_OI_Compass = [];
-    PE_array_OI_Compass = [];
-
-    $.each(Dict, function (key, value) {
-      if (key.indexOf("CE") !== -1) {
-        CE_array_OI_Compass.push(value);
-      } else if (key.indexOf("PE") !== -1) {
-        PE_array_OI_Compass.push(value);
-      }
-    });
-
-    let my_array_1 = CE_array_OI_Compass;
-    let reversed_array_1 = $([].concat(my_array_1)).toArray().reverse();
-    CE_array_OI_Compass = reversed_array_1
-
-    let my_array_2 = PE_array_OI_Compass;
-    let reversed_array_2 = $([].concat(my_array_2)).toArray().reverse();
-    PE_array_OI_Compass = reversed_array_2
-
-    OI_Compass_atm_1 = `${Object.values(Index_OI_Change_data)[0]['atm']}`
-    // OI_Compass_atm_2 = `${Object.values(Index_OI_Change_data)[1]['atm']}`
-    // if (OI_Compass_atm_1 == OI_Compass_atm_2) {
-    //   OI_Compass_atm_Final = OI_Compass_atm_1
-    // } else {
-    OI_Compass_atm_Final = OI_Compass_atm_1
-    // }
-
   }
 }
 
 // Calculation for Change in P/C
 function Changes_in_Put_Call() {
-  if (Index_OI_Change_data != 0) {
+  if (Index_OI_Change_data != 0 && Index_OI_Change_data != "Err Ts") {
+    if (Object.keys(Index_OI_Change_data).length > 1) {
+      let array = Object.values(Index_OI_final_Change_data)
 
-    let array = Object.values(Index_OI_final_Change_data)
-
-    // Calculate ts1_CE_Total
-    let ts1_CE_Total = 0;
-    for (let key in array[0]) {
-      if (key.endsWith('CE')) {
-        ts1_CE_Total += array[0][key];
+      // Calculate ts1_CE_Total
+      let ts1_CE_Total = 0;
+      for (let key in array[0]) {
+        if (key.endsWith('CE')) {
+          ts1_CE_Total += array[0][key];
+        }
       }
-    }
 
-    // Calculate ts2_CE_Total
-    let ts2_CE_Total = 0;
-    for (let key in array[1]) {
-      if (key.endsWith('CE')) {
-        ts2_CE_Total += array[1][key];
+      // Calculate ts2_CE_Total
+      let ts2_CE_Total = 0;
+      for (let key in array[1]) {
+        if (key.endsWith('CE')) {
+          ts2_CE_Total += array[1][key];
+        }
       }
-    }
 
-    // Calculate Change_CE_OI
-    Change_CE_OI = ts2_CE_Total - ts1_CE_Total;
+      // Calculate Change_CE_OI
+      Change_CE_OI = ts2_CE_Total - ts1_CE_Total;
 
-    // Calculate ts1_PE_Total
-    let ts1_PE_Total = 0;
-    for (let key in array[0]) {
-      if (key.endsWith('PE')) {
-        ts1_PE_Total += array[0][key];
+      // Calculate ts1_PE_Total
+      let ts1_PE_Total = 0;
+      for (let key in array[0]) {
+        if (key.endsWith('PE')) {
+          ts1_PE_Total += array[0][key];
+        }
       }
-    }
 
-    // Calculate ts2_PE_Total
-    let ts2_PE_Total = 0;
-    for (let key in array[1]) {
-      if (key.endsWith('PE')) {
-        ts2_PE_Total += array[1][key];
+      // Calculate ts2_PE_Total
+      let ts2_PE_Total = 0;
+      for (let key in array[1]) {
+        if (key.endsWith('PE')) {
+          ts2_PE_Total += array[1][key];
+        }
       }
+
+      // Calculate Change_PE_OI
+      Change_PE_OI = ts2_PE_Total - ts1_PE_Total;
+
+      $('.chg_ce').text(Change_CE_OI)
+      $('.chg_pe').text(Change_PE_OI)
     }
-
-    // Calculate Change_PE_OI
-    Change_PE_OI = ts2_PE_Total - ts1_PE_Total;
-
-    $('.chg_ce').text(Change_CE_OI)
-    $('.chg_pe').text(Change_PE_OI)
   }
 }
 
