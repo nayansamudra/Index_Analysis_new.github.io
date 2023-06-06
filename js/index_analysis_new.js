@@ -730,10 +730,6 @@ $(document).ready(function () {
   };
   chart2 = new ApexCharts(document.querySelector("#donutchart1"), options1), chart2.render();
 
-  $("#donutchart path:eq(1)").css("fill", "#ff5253")
-  Change_PE_OI > 0 ? $("#donutchart path:eq(0)").css("fill", "#00d3c0") : $("#donutchart path:eq(0)").css("fill", "#ff5253"),
-    Change_CE_OI > 0 ? $("#donutchart path:eq(1)").css("fill", "#ff5253") : $("#donutchart path:eq(1)").css("fill", "#00d3c0");
-
   call_INDEX_OI_CHANGE_API(ts1, ts2, "NIFTY 50", Nifty_exp_1, user, abc)
   // Index_OI_Change_data = {1685936700.0 : {'NFO:NIFTY2360818100CE': 1418, 'NFO:NIFTY2360818100PE': 67153, 'NFO:NIFTY2360818150CE': 497, 'NFO:NIFTY2360818150PE': 38517, 'NFO:NIFTY2360818200CE': 4853}}
   OI_Compass("NIFTY 50")
@@ -895,7 +891,9 @@ $(document).ready(function () {
   };
   chart1 = new ApexCharts(document.querySelector("#donutchart"), donut_bar), chart1.render();
 
-
+  $("#donutchart path:eq(1)").css("fill", "#ff5253")
+  Change_PE_OI > 0 ? $("#donutchart path:eq(0)").css("fill", "#00d3c0") : $("#donutchart path:eq(0)").css("fill", "#ff5253"),
+    Change_CE_OI > 0 ? $("#donutchart path:eq(1)").css("fill", "#ff5253") : $("#donutchart path:eq(1)").css("fill", "#00d3c0");
 
   // On click Function of 3 BUTTONS [NIFTY 50, NIFTY BANK, NIFTY FIN SERVICE]
   $("#nifty_btn").click(function () {
