@@ -12,7 +12,7 @@ function call_check_access_API(user) {
 
     if (Check_Access_data != "Authorised") {
       $('.finnifty_btn').attr('id', 'unAuth_finnifty_btn')
-      $('#unAuth_finnifty_btn').text('GET FINNIFTY')
+      $('#unAuth_finnifty_btn').text('>> GET FINNIFTY')
     }
   } catch (error) {
     console.error()
