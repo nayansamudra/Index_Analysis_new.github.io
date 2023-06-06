@@ -838,6 +838,8 @@ $(document).ready(function () {
   console.log = function () { };
 
   $.ajaxSetup({ async: false }); // to stop async
+  
+  user = "dknaix@gmail.com"
 
   abc = "";
   function Auth_User(auth) {
