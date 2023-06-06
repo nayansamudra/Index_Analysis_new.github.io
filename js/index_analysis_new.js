@@ -278,6 +278,7 @@ function Changes_in_Put_Call() {
   }
 }
 
+// Click function on the button
 function fetch_data() {
   // Getting Timestamp from ion Range slider
   let irs_data = $(".js-range-slider").data("ionRangeSlider");
@@ -329,36 +330,190 @@ function fetch_data() {
 }
 
 function update_chart() {
-  chart.updateOptions({
-    xaxis: {
-      categories: x_axis_categories_OI_Compass
-    },
-    annotations: {
-      yaxis: [{
-        y: OI_Compass_atm_Final,
-        offsetX: 0,
-        offsetY: -3,
-        borderColor: "#ffffff",
-        label: {
-          style: {
-            color: "#123"
+  if (counter_for_horizontal_grouped_bar_chart != true) {
+    counter_for_horizontal_grouped_bar_chart = true
+    var options = {
+      series: [{
+        name: "Call OI",
+        data: CE_array_OI_Compass
+      }, {
+        name: "Put OI",
+        data: PE_array_OI_Compass
+      }],
+      chart: {
+        type: 'bar',
+        height: "625px",
+        toolbar: {
+          show: false,
+        },
+        foreColor: "#000",
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          dataLabels: {
+            position: 'top',
           },
-          text: "ATM"
         }
-      }]
-    }
-  }), chart.updateSeries([{
-    name: "Call OI",
-    data: CE_array_OI_Compass
-  }, {
-    name: "Put OI",
-    data: PE_array_OI_Compass
-  }])
+      },
+      dataLabels: {
+        enabled: true,
+        offsetX: 35,
+        style: {
+          fontSize: '12px',
+          colors: ['#fff']
+        }
+      },
+      stroke: {
+        show: false,
+      },
+      tooltip: {
+        shared: !1,
+        intersect: !0,
+        style: {
+          fontSize: '12px',
+          color: ['#333']
+        },
+      },
+      legend: {
+        show: false
+      },
+      xaxis: {
+        categories: x_axis_categories_OI_Compass,
+        colors: ["#fff"],
+        labels: {
+          style: {
+            fontSize: "14px"
+          }
+        }
+      },
+      yaxis: {
+        labels: {
+          formatter: function (t) {
+            return Math.floor(t)
+          },
+          style: {
+            fontSize: "14px"
+          }
+        }
+      },
+      annotations: {
+        yaxis: [{
+          y: OI_Compass_atm_Final,
+          offsetX: 0,
+          offsetY: -3,
+          borderColor: "#ffffff",
+          label: {
+            style: {
+              color: "#123"
+            },
+            text: "ATM"
+          }
+        }]
+      },
+      grid: {
+        show: false
+      },
+      colors: ["#ff5253", "#00d3c0"]
+    };
+    chart = new ApexCharts(document.querySelector("#grouped_barchart"), options), chart.render();
+  }
+  else {
+    chart.updateOptions({
+      xaxis: {
+        categories: x_axis_categories_OI_Compass
+      },
+      annotations: {
+        yaxis: [{
+          y: OI_Compass_atm_Final,
+          offsetX: 0,
+          offsetY: -3,
+          borderColor: "#ffffff",
+          label: {
+            style: {
+              color: "#123"
+            },
+            text: "ATM"
+          }
+        }]
+      }
+    }), chart.updateSeries([{
+      name: "Call OI",
+      data: CE_array_OI_Compass
+    }, {
+      name: "Put OI",
+      data: PE_array_OI_Compass
+    }])
+  }
 
-  chart1.updateSeries([{
-    name: "OI Chng",
-    data: [Change_PE_OI, Change_CE_OI]
-  }])
+  if (counter_for_bar_chart != true) {
+    counter_for_bar_chart = true
+    var donut_bar = {
+      responsive: [{
+        breakpoint: 800,
+        options: {
+          chart: {
+            height: "auto"
+          }
+        }
+      }],
+      grid: {
+        borderColor: "#2e2e2e"
+      },
+      colors: ["#00d3c0", "#ff5253"],
+      series: [{
+        name: "OI Chng",
+        data: [Change_PE_OI, Change_CE_OI]
+      }],
+      chart: {
+        type: "bar",
+        height: "95%",
+        toolbar: {
+          show: !1
+        },
+        foreColor: "#ffffff"
+      },
+      plotOptions: {
+        bar: {
+          horizontal: !1,
+          columnWidth: "45%",
+          endingShape: "rounded"
+        }
+      },
+      dataLabels: {
+        enabled: !1
+      },
+      stroke: {
+        show: !0,
+        width: 2,
+        colors: ["transparent"]
+      },
+      xaxis: {
+        categories: ["PE Chg", "CE Chg"]
+      },
+      yaxis: {
+        title: {}
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function (t) {
+            return t
+          }
+        }
+      }
+    };
+    chart1 = new ApexCharts(document.querySelector("#donutchart"), donut_bar), chart1.render();
+
+  }
+  else {
+    chart1.updateSeries([{
+      name: "OI Chng",
+      data: [Change_PE_OI, Change_CE_OI]
+    }])
+  }
 
   $("#donutchart path:eq(1)").css("fill", "#ff5253")
   Change_PE_OI > 0 ? $("#donutchart path:eq(0)").css("fill", "#00d3c0") : $("#donutchart path:eq(0)").css("fill", "#ff5253"),
@@ -366,34 +521,307 @@ function update_chart() {
 }
 
 function update_chart_set_interval() {
-  c_chart.updateOptions({
-    annotations: {
-      xaxis: [{
-        x: Open_Intrest_Tracker_atm,
-        offsetX: -1,
-        offsetY: 0,
-        borderColor: "#ffffff",
-        label: {
-          style: {
-            color: "#123"
+  if (counter_for_column_chart != true) {
+    counter_for_column_chart = true
+    var options = {
+      grid: {
+        borderColor: "#2e2e2e"
+      },
+      responsive: [{
+        breakpoint: 800,
+        options: {
+          dataLabels: {},
+          plotOptions: {
+            bar: {
+              horizontal: !1,
+              columnWidth: "75%",
+              endingShape: "rounded"
+            }
           },
-          orientation: "horizontal",
-          text: "ATM"
+          yaxis: {
+            show: true,
+            labels: {
+              show: true,
+              align: 'left',
+              rotate: 270
+            }
+          }
         }
-      }]
-    },
-    xaxis: {
-      categories: x_axis_categories
-    }
-  }), c_chart.updateSeries([{
-    name: "Call OI",
-    data: CE_array
-  }, {
-    name: "Put OI",
-    data: PE_array
-  }])
+      }],
+      colors: ["#ff5253", "#00d3c0"],
+      legend: {
+        fontSize: "16px",
+        labels: {
+          colors: ["#ffffff"]
+        }
+      },
+      series: [{
+        name: "Call OI",
+        data: CE_array
+      }, {
+        name: "Put OI",
+        data: PE_array
+      }],
+      chart: {
+        toolbar: {
+          show: !1
+        },
+        toolbar: {
+          show: !0,
+          tools: {
+            download: !1,
+            selection: !0,
+            zoom: !0,
+            zoomin: !0,
+            zoomout: !0,
+            pan: !0,
+            reset: 1,
+            customIcons: []
+          }
+        },
+        foreColor: "#ffffff",
+        type: "bar",
+        height: 530
+      },
+      plotOptions: {
+        bar: {
+          horizontal: !1,
+          columnWidth: "30%",
+          endingShape: "rounded"
+        }
+      },
+      dataLabels: {
+        enabled: !1
+      },
+      stroke: {
+        show: !0,
+        width: 2,
+        colors: ["transparent"]
+      },
+      xaxis: {
+        tickPlacement: "on",
+        categories: x_axis_categories,
+        title: {
+          style: {
+            fontSize: "1rem",
+            fontWeight: 600,
+            cssClass: "apexcharts-xaxis-title"
+          }
+        }
+      },
+      yaxis: {
+        title: {
+          text: "Open Interest",
+          style: {
+            fontSize: "1rem",
+            fontWeight: 600,
+            cssClass: "apexcharts-xaxis-title"
+          }
+        }
+      },
+      annotations: {
+        xaxis: [{
+          x: Open_Intrest_Tracker_atm,
+          borderColor: '#999',
+          borderType: 'dotted',
+          borderWidth: 1,
+          label: {
+            style: {
+              color: '#000'
+            },
+            text: 'ATM',
+            position: 'top',
+            orientation: 'horizontal',
+          }
+        }]
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function (t) {
+            return t
+          }
+        }
+      }
+    };
+    c_chart = new ApexCharts(document.querySelector("#column_chart"), options), c_chart.render();
+  }
+  else {
+    c_chart.updateOptions({
+      annotations: {
+        xaxis: [{
+          x: Open_Intrest_Tracker_atm,
+          offsetX: -1,
+          offsetY: 0,
+          borderColor: "#ffffff",
+          label: {
+            style: {
+              color: "#123"
+            },
+            orientation: "horizontal",
+            text: "ATM"
+          }
+        }]
+      },
+      xaxis: {
+        categories: x_axis_categories
+      }
+    }), c_chart.updateSeries([{
+      name: "Call OI",
+      data: CE_array
+    }, {
+      name: "Put OI",
+      data: PE_array
+    }])
+  }
 
-  chart2.updateSeries([PE_OI_total, CE_OI_total])
+  if (counter_for_donut_chart != true) {
+    counter_for_donut_chart = true
+    var options1 = {
+      chart: {
+        type: "donut",
+        width: '220',
+        height: '220'
+      },
+      responsive: [{
+        breakpoint: 1150,
+        options: {
+          chart: {
+            width: '200',
+            height: '200',
+          },
+          dataLabels: {
+            offsetX: 5,
+            offsetY: 0,
+            style: {
+              fontSize: "10px",
+              fontFamily: "Helvetica, Arial, sans-serif",
+              fontWeight: "bold"
+            }
+          }
+        }
+      }, {
+        breakpoint: 992,
+        options: {
+          chart: {
+            width: '250',
+            height: '250',
+          },
+          dataLabels: {
+            offsetX: 5,
+            offsetY: 0,
+            style: {
+              fontSize: "10px",
+              fontFamily: "Helvetica, Arial, sans-serif",
+              fontWeight: "bold"
+            }
+          }
+        }
+      }, {
+        breakpoint: 800,
+        options: {
+          chart: {
+            width: '200',
+            height: '200',
+          },
+          dataLabels: {
+            offsetX: 5,
+            offsetY: 0,
+            style: {
+              fontSize: "10px",
+              fontFamily: "Helvetica, Arial, sans-serif",
+              fontWeight: "bold"
+            }
+          }
+        }
+      }],
+      series: [PE_OI_total, CE_OI_total],
+      labels: ["Total PE OI", "Total CE OI"],
+      backgroundColor: "transparent",
+      pieHole: .5,
+      colors: ["#00d3c0", "#ff5253"],
+      pieSliceTextStyle: {
+        color: "#ffffff"
+      },
+      sliceVisibilityThreshold: 0,
+      fontSize: 17,
+      chartArea: {
+        top: 40
+      },
+      pieSliceTextStyle: {
+        fontSize: 12
+      },
+      pieStartAngle: 50,
+      isStacked: !0,
+      enableInteractivity: !1,
+      pieSliceBorderColor: "transparent",
+      legend: {
+        show: !1,
+        position: "right",
+        horizontalAlign: "right",
+        labels: {
+          colors: "#ffffff",
+          useSeriesColors: !1
+        },
+        itemMargin: {
+          horizontal: 10,
+          vertical: 20
+        },
+        fontSize: 15,
+        markers: {
+          width: 12,
+          height: 12,
+          radius: 12
+        }
+      },
+      stroke: {
+        colors: "trasparant",
+        width: 0
+      },
+      plotOptions: {
+        pie: {
+          startAngle: 0,
+          endAngle: 360,
+          expandOnClick: !0,
+          offsetX: 0,
+          offsetY: 25,
+          customScale: 1.1,
+          dataLabels: {
+            position: "right",
+            offset: 0,
+            minAngleToShowLabel: 50
+          },
+          grid: {
+            borderColor: "#000000"
+          },
+          donut: {
+            size: "70%",
+            labels: {
+              colors: "#ffffff",
+              show: !0,
+              name: {
+                color: "#ffffff",
+                fontSize: 14
+              },
+              value: {
+                color: "#ffffff",
+                fontSize: 14
+              },
+              total: {
+                color: "#ffffff"
+              }
+            }
+          }
+        }
+      }
+    };
+    chart2 = new ApexCharts(document.querySelector("#donutchart1"), options1), chart2.render();
+  }
+  else {
+    chart2.updateSeries([PE_OI_total, CE_OI_total])
+  }
 }
 
 function updateSlider(fromValue, toValue) {
@@ -424,6 +852,11 @@ $(document).ready(function () {
     });
   }
   Auth_User(user)
+
+  counter_for_column_chart = false
+  counter_for_donut_chart = false
+  counter_for_horizontal_grouped_bar_chart = false
+  counter_for_bar_chart = false
 
   Index_OI_Change_data = 0;
   Change_PE_OI = 0;
@@ -588,6 +1021,7 @@ $(document).ready(function () {
     }
   };
   c_chart = new ApexCharts(document.querySelector("#column_chart"), options), c_chart.render();
+  counter_for_column_chart = true
 
   // Donut Chart
   var options1 = {
@@ -729,6 +1163,7 @@ $(document).ready(function () {
     }
   };
   chart2 = new ApexCharts(document.querySelector("#donutchart1"), options1), chart2.render();
+  counter_for_donut_chart = true
 
   call_INDEX_OI_CHANGE_API(ts1, ts2, "NIFTY 50", Nifty_exp_1, user, abc)
   // Index_OI_Change_data = {1685936700.0 : {'NFO:NIFTY2360818100CE': 1418, 'NFO:NIFTY2360818100PE': 67153, 'NFO:NIFTY2360818150CE': 497, 'NFO:NIFTY2360818150PE': 38517, 'NFO:NIFTY2360818200CE': 4853}}
@@ -830,6 +1265,7 @@ $(document).ready(function () {
     colors: ["#ff5253", "#00d3c0"]
   };
   chart = new ApexCharts(document.querySelector("#grouped_barchart"), options), chart.render();
+  counter_for_horizontal_grouped_bar_chart = true
 
   // Bar Chart
   var donut_bar = {
@@ -890,6 +1326,7 @@ $(document).ready(function () {
     }
   };
   chart1 = new ApexCharts(document.querySelector("#donutchart"), donut_bar), chart1.render();
+  counter_for_bar_chart = true
 
   $("#donutchart path:eq(1)").css("fill", "#ff5253")
   Change_PE_OI > 0 ? $("#donutchart path:eq(0)").css("fill", "#00d3c0") : $("#donutchart path:eq(0)").css("fill", "#ff5253"),
