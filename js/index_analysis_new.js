@@ -1,4 +1,5 @@
-root = "https://apii.tradingcafeindia.com/api"
+// root = "https://apii.tradingcafeindia.com/api"
+root = "https://students.tradingcafeindia.com/tc_indicator"
 root_dhan = "https://tredcode.tradingcafeindia.com/dhan"
 
 // Check Access API
@@ -59,7 +60,7 @@ function call_LIVE_OI_API(script, exp, user, abc) {
       console.log('Error: ' + response);
     });
     ts_2 = Object.keys(Live_OI_data)[0]
-    $('#c_chart_last_upd').text(`${moment.unix(ts_2).format("hh:mm")}`)
+    $('#c_chart_last_upd').text(`${moment.unix(ts_2).format("HH:mm")}`)
     return [Live_OI_data, ts2]
   } catch (error) {
     console.error()
@@ -838,7 +839,7 @@ $(document).ready(function () {
   console.log = function () { };
 
   $.ajaxSetup({ async: false }); // to stop async
-  
+
   user = "dknaix@gmail.com"
 
   abc = "";
@@ -1513,32 +1514,32 @@ $(document).ready(function () {
   })
 
   // SetInterval after 3 min
-  setInterval(() => {
-    var x = $("#Expiry").prop("selectedIndex");
-    if ($("#nifty_btn").hasClass("gb_active") && x == 1) {
-      call_LIVE_OI_API("NIFTY 50", Nifty_exp_2, user, abc)
-      NIFTY_50_Open_Intrest_Tracker("NIFTY 50")
-      update_chart_set_interval()
-    } else if ($("#nifty_btn").hasClass("gb_active") && x == 0) {
-      call_LIVE_OI_API("NIFTY 50", Nifty_exp_1, user, abc)
-      NIFTY_50_Open_Intrest_Tracker("NIFTY 50")
-      update_chart_set_interval()
-    } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 1) {
-      call_LIVE_OI_API("NIFTY BANK", Nifty_exp_2, user, abc)
-      NIFTY_50_Open_Intrest_Tracker("NIFTY BANK")
-      update_chart_set_interval()
-    } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 0) {
-      call_LIVE_OI_API("NIFTY BANK", Nifty_exp_1, user, abc)
-      NIFTY_50_Open_Intrest_Tracker("NIFTY BANK")
-      update_chart_set_interval()
-    } else if ($("#finnifty_btn").hasClass("gb_active") && x == 1) {
-      call_LIVE_OI_API("NIFTY FIN SERVICE", Nifty_exp_2, user, abc)
-      NIFTY_50_Open_Intrest_Tracker("NIFTY FIN SERVICE")
-      update_chart_set_interval()
-    } else if ($("#finnifty_btn").hasClass("gb_active") && x == 0) {
-      call_LIVE_OI_API("NIFTY FIN SERVICE", Nifty_exp_1, user, abc)
-      NIFTY_50_Open_Intrest_Tracker("NIFTY FIN SERVICE")
-      update_chart_set_interval()
-    }
-  }, 180000);
+  // setInterval(() => {
+  //   var x = $("#Expiry").prop("selectedIndex");
+  //   if ($("#nifty_btn").hasClass("gb_active") && x == 1) {
+  //     call_LIVE_OI_API("NIFTY 50", Nifty_exp_2, user, abc)
+  //     NIFTY_50_Open_Intrest_Tracker("NIFTY 50")
+  //     update_chart_set_interval()
+  //   } else if ($("#nifty_btn").hasClass("gb_active") && x == 0) {
+  //     call_LIVE_OI_API("NIFTY 50", Nifty_exp_1, user, abc)
+  //     NIFTY_50_Open_Intrest_Tracker("NIFTY 50")
+  //     update_chart_set_interval()
+  //   } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 1) {
+  //     call_LIVE_OI_API("NIFTY BANK", Nifty_exp_2, user, abc)
+  //     NIFTY_50_Open_Intrest_Tracker("NIFTY BANK")
+  //     update_chart_set_interval()
+  //   } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 0) {
+  //     call_LIVE_OI_API("NIFTY BANK", Nifty_exp_1, user, abc)
+  //     NIFTY_50_Open_Intrest_Tracker("NIFTY BANK")
+  //     update_chart_set_interval()
+  //   } else if ($("#finnifty_btn").hasClass("gb_active") && x == 1) {
+  //     call_LIVE_OI_API("NIFTY FIN SERVICE", Nifty_exp_2, user, abc)
+  //     NIFTY_50_Open_Intrest_Tracker("NIFTY FIN SERVICE")
+  //     update_chart_set_interval()
+  //   } else if ($("#finnifty_btn").hasClass("gb_active") && x == 0) {
+  //     call_LIVE_OI_API("NIFTY FIN SERVICE", Nifty_exp_1, user, abc)
+  //     NIFTY_50_Open_Intrest_Tracker("NIFTY FIN SERVICE")
+  //     update_chart_set_interval()
+  //   }
+  // }, 180000);
 })
