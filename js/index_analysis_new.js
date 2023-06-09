@@ -1,5 +1,4 @@
-// root = "https://apii.tradingcafeindia.com/api"
-root = "https://students.tradingcafeindia.com/tc_indicator"
+root = "https://apii.tradingcafeindia.com/api"
 root_dhan = "https://tredcode.tradingcafeindia.com/dhan"
 
 // Check Access API
@@ -141,8 +140,8 @@ function NIFTY_50_Open_Intrest_Tracker(script) {
 
   Open_Intrest_Tracker_atm = `${Object.values(Live_OI_data)[0]['atm']}`
 
-  $('.total_ce').text(CE_OI_total)
-  $('.total_pe').text(PE_OI_total)
+  $('.total_ce').text(CE_OI_total.toLocaleString())
+  $('.total_pe').text(PE_OI_total.toLocaleString())
   $('.pcr_net').text(`${parseFloat(PE_OI_total / CE_OI_total).toFixed(2)}`)
 }
 
@@ -275,8 +274,8 @@ function Changes_in_Put_Call() {
       // Calculate Change_PE_OI
       Change_PE_OI = ts2_PE_Total - ts1_PE_Total;
 
-      $('.chg_ce').text(Change_CE_OI)
-      $('.chg_pe').text(Change_PE_OI)
+      $('.chg_ce').text(Change_CE_OI.toLocaleString())
+      $('.chg_pe').text(Change_PE_OI.toLocaleString())
     }
   }
 }
@@ -334,6 +333,27 @@ function fetch_data() {
 
 function update_chart() {
   if (counter_for_horizontal_grouped_bar_chart != true) {
+    var x = $("#Expiry").prop("selectedIndex");
+    if ($("#nifty_btn").hasClass("gb_active") && x == 1) {
+      Button = "NIFTY"
+      Expiry = Nifty_exp_2
+    } else if ($("#nifty_btn").hasClass("gb_active") && x == 0) {
+      Button = "NIFTY"
+      Expiry = Nifty_exp_1
+    } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 1) {
+      Button = "BANKNIFTY"
+      Expiry = Nifty_exp_2
+    } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 0) {
+      Button = "BANKNIFTY"
+      Expiry = Nifty_exp_1
+    } else if ($("#finnifty_btn").hasClass("gb_active") && x == 1) {
+      Button = "FINNIFTY"
+      Expiry = Nifty_exp_2
+    } else if ($("#finnifty_btn").hasClass("gb_active") && x == 0) {
+      Button = "FINNIFTY"
+      Expiry = Nifty_exp_1
+    }
+
     counter_for_horizontal_grouped_bar_chart = true
     var options = {
       series: [{
@@ -350,6 +370,30 @@ function update_chart() {
           show: false,
         },
         foreColor: "#000",
+        events: {
+          click: (event, chartContext, dataPointIndex) => {
+            let temp = dataPointIndex['dataPointIndex']
+            let strike = dataPointIndex['config']['xaxis']['categories'][temp];
+            // console.log("strike = ", strike)
+
+            let temp_1 = dataPointIndex['seriesIndex']
+            let value_name = dataPointIndex['globals']['initialSeries'][temp_1]['data'][temp];
+            // console.log("value_name = ", value_name)
+            var p_c = ''
+            var idx = ''
+
+            if (temp_1 == 0) { console.log("Name = CE"); p_c = 'CALL' }
+            else if (temp_1 == 1) { console.log("Name = PE"); p_c = 'PUT' }
+
+            let exp = (moment(Expiry).format("DD MMM")).toUpperCase()
+
+            idx = Button
+
+            let symbol = idx + " " + exp + " " + strike + " " + p_c
+            console.log(idx, exp, strike, p_c, " ", symbol)
+            // tw_charts(symbol)
+          }
+        },
       },
       plotOptions: {
         bar: {
@@ -422,9 +466,57 @@ function update_chart() {
     chart = new ApexCharts(document.querySelector("#grouped_barchart"), options), chart.render();
   }
   else {
+    var x = $("#Expiry").prop("selectedIndex");
+    if ($("#nifty_btn").hasClass("gb_active") && x == 1) {
+      Button = "NIFTY"
+      Expiry = Nifty_exp_2
+    } else if ($("#nifty_btn").hasClass("gb_active") && x == 0) {
+      Button = "NIFTY"
+      Expiry = Nifty_exp_1
+    } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 1) {
+      Button = "BANKNIFTY"
+      Expiry = Nifty_exp_2
+    } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 0) {
+      Button = "BANKNIFTY"
+      Expiry = Nifty_exp_1
+    } else if ($("#finnifty_btn").hasClass("gb_active") && x == 1) {
+      Button = "FINNIFTY"
+      Expiry = Nifty_exp_2
+    } else if ($("#finnifty_btn").hasClass("gb_active") && x == 0) {
+      Button = "FINNIFTY"
+      Expiry = Nifty_exp_1
+    }
+
+
     chart.updateOptions({
       xaxis: {
         categories: x_axis_categories_OI_Compass
+      },
+      chart: {
+        events: {
+          click: (event, chartContext, dataPointIndex) => {
+            let temp = dataPointIndex['dataPointIndex']
+            let strike = dataPointIndex['config']['xaxis']['categories'][temp];
+            // console.log("strike = ", strike)
+
+            let temp_1 = dataPointIndex['seriesIndex']
+            let value_name = dataPointIndex['globals']['initialSeries'][temp_1]['data'][temp];
+            // console.log("value_name = ", value_name)
+            var p_c = ''
+            var idx = ''
+
+            if (temp_1 == 0) { console.log("Name = CE"); p_c = 'CALL' }
+            else if (temp_1 == 1) { console.log("Name = PE"); p_c = 'PUT' }
+
+            let exp = (moment(Expiry).format("DD MMM")).toUpperCase()
+
+            idx = Button
+
+            let symbol = idx + " " + exp + " " + strike + " " + p_c
+            console.log(idx, exp, strike, p_c, " ", symbol)
+            // tw_charts(symbol)
+          }
+        },
       },
       annotations: {
         yaxis: [{
@@ -836,7 +928,7 @@ function updateSlider(fromValue, toValue) {
 
 $(document).ready(function () {
 
-  console.log = function () { };
+  // console.log = function () { };
 
   $.ajaxSetup({ async: false }); // to stop async
 
@@ -1197,6 +1289,35 @@ $(document).ready(function () {
         show: false,
       },
       foreColor: "#000",
+      events: {
+        click: (event, chartContext, dataPointIndex) => {
+          let temp = dataPointIndex['dataPointIndex']
+          let strike = dataPointIndex['config']['xaxis']['categories'][temp];
+          // console.log("strike = ", strike)
+
+          let temp_1 = dataPointIndex['seriesIndex']
+          let value_name = dataPointIndex['globals']['initialSeries'][temp_1]['data'][temp];
+          // console.log("value_name = ", value_name)
+          var p_c = ''
+          var idx = ''
+
+          if (temp_1 == 0) { console.log("Name = CE"); p_c = 'CALL' }
+          else if (temp_1 == 1) { console.log("Name = PE"); p_c = 'PUT' }
+
+          let exp = moment(Nifty_exp_1).format('DD MMM').toUpperCase()
+          // exp = (moment(exp).format("DD MMM")).toUpperCase()
+
+          idx = $('#nifty_btn').text()
+
+          // if (global_index_current.toLowerCase() == "nifty 50") { idx = 'NIFTY' }
+          // else if (global_index_current.toLowerCase() == "banknifty") { idx = 'BANKNIFTY' }
+
+
+          let symbol = idx + " " + exp + " " + strike + " " + p_c
+          console.log(symbol)
+          // tw_charts(symbol)
+        }
+      },
     },
     plotOptions: {
       bar: {

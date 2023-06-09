@@ -177,3 +177,18 @@ Apexchart
     display: block !important;
   }
 }
+
+@media (max-width:350px) {
+  .mx-3 {
+    margin-right: 0.25rem!important;
+    margin-left: 0.25rem!important;
+  }
+  .go_btn{
+    font-size: 14px !important;
+  }
+  #Submit{
+    font-size: 12px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
