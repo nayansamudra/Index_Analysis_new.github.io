@@ -101,7 +101,6 @@ function call_INDEX_OI_CHANGE_API(ts1, ts2, script, exp, user, abc) {
 
 // Calculation for data of NIFTY 50 Open Interest Tracker
 function NIFTY_50_Open_Intrest_Tracker(script) {
-  console.log("NIFTY_50_Open_Intrest_Tracker")
   let array = Object.keys(Object.values(Live_OI_data)[0])
   let processedArray = array.slice(0, array.length - 1);
   let newArray = $.map(processedArray, function (element) {
@@ -653,7 +652,6 @@ function update_chart() {
 }
 
 function update_chart_set_interval() {
-  console.log("update_chart_set_interval - Call")
   if (counter_for_column_chart != true) {
     counter_for_column_chart = true
     var options = {
@@ -963,6 +961,63 @@ function updateSlider(fromValue, toValue) {
     to: toValue
   });
 }
+
+
+function getNextTargetTime() {
+  var currentTime = new Date();
+  var minutes = currentTime.getMinutes();
+  var seconds = currentTime.getSeconds();
+
+  // Calculate the time until the next minute that is a multiple of 3
+  var timeUntilNextTarget = 0;
+  var remainder = minutes % 3;
+  if (remainder === 0 && seconds < 20) {
+    timeUntilNextTarget = (3 * 60 - minutes) * 60 * 1000 + (20 - seconds) * 1000;
+  } else {
+    var nextMinute = (Math.floor(minutes / 3) + 1) * 3;
+    timeUntilNextTarget = (nextMinute - minutes) * 60 * 1000 + (20 - seconds) * 1000;
+  }
+
+  return timeUntilNextTarget;
+}
+
+function schedulePrint() {
+  var timeUntilNextTarget = getNextTargetTime();
+
+  // Delay the execution until the next target time is reached
+  setTimeout(function () {
+    var x = $("#Expiry").prop("selectedIndex");
+    if ($("#nifty_btn").hasClass("gb_active") && x == 1) {
+      call_LIVE_OI_API("NIFTY 50", Nifty_exp_2, user, abc)
+      NIFTY_50_Open_Intrest_Tracker("NIFTY 50")
+      update_chart_set_interval()
+    } else if ($("#nifty_btn").hasClass("gb_active") && x == 0) {
+      call_LIVE_OI_API("NIFTY 50", Nifty_exp_1, user, abc)
+      NIFTY_50_Open_Intrest_Tracker("NIFTY 50")
+      update_chart_set_interval()
+    } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 1) {
+      call_LIVE_OI_API("NIFTY BANK", Nifty_exp_2, user, abc)
+      NIFTY_50_Open_Intrest_Tracker("NIFTY BANK")
+      update_chart_set_interval()
+    } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 0) {
+      call_LIVE_OI_API("NIFTY BANK", Nifty_exp_1, user, abc)
+      NIFTY_50_Open_Intrest_Tracker("NIFTY BANK")
+      update_chart_set_interval()
+    } else if ($("#finnifty_btn").hasClass("gb_active") && x == 1) {
+      call_LIVE_OI_API("NIFTY FIN SERVICE", Nifty_exp_2, user, abc)
+      NIFTY_50_Open_Intrest_Tracker("NIFTY FIN SERVICE")
+      update_chart_set_interval()
+    } else if ($("#finnifty_btn").hasClass("gb_active") && x == 0) {
+      call_LIVE_OI_API("NIFTY FIN SERVICE", Nifty_exp_1, user, abc)
+      NIFTY_50_Open_Intrest_Tracker("NIFTY FIN SERVICE")
+      update_chart_set_interval()
+    }
+
+    // Schedule the next print
+    schedulePrint();
+  }, timeUntilNextTarget);
+}
+
 
 $(document).ready(function () {
 
@@ -1672,33 +1727,6 @@ $(document).ready(function () {
     }
   })
 
-  // SetInterval after 3 min
-  // setInterval(() => {
-  //   var x = $("#Expiry").prop("selectedIndex");
-  //   if ($("#nifty_btn").hasClass("gb_active") && x == 1) {
-  //     call_LIVE_OI_API("NIFTY 50", Nifty_exp_2, user, abc)
-  //     NIFTY_50_Open_Intrest_Tracker("NIFTY 50")
-  //     update_chart_set_interval()
-  //   } else if ($("#nifty_btn").hasClass("gb_active") && x == 0) {
-  //     call_LIVE_OI_API("NIFTY 50", Nifty_exp_1, user, abc)
-  //     NIFTY_50_Open_Intrest_Tracker("NIFTY 50")
-  //     update_chart_set_interval()
-  //   } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 1) {
-  //     call_LIVE_OI_API("NIFTY BANK", Nifty_exp_2, user, abc)
-  //     NIFTY_50_Open_Intrest_Tracker("NIFTY BANK")
-  //     update_chart_set_interval()
-  //   } else if ($("#bnknifty_btn").hasClass("gb_active") && x == 0) {
-  //     call_LIVE_OI_API("NIFTY BANK", Nifty_exp_1, user, abc)
-  //     NIFTY_50_Open_Intrest_Tracker("NIFTY BANK")
-  //     update_chart_set_interval()
-  //   } else if ($("#finnifty_btn").hasClass("gb_active") && x == 1) {
-  //     call_LIVE_OI_API("NIFTY FIN SERVICE", Nifty_exp_2, user, abc)
-  //     NIFTY_50_Open_Intrest_Tracker("NIFTY FIN SERVICE")
-  //     update_chart_set_interval()
-  //   } else if ($("#finnifty_btn").hasClass("gb_active") && x == 0) {
-  //     call_LIVE_OI_API("NIFTY FIN SERVICE", Nifty_exp_1, user, abc)
-  //     NIFTY_50_Open_Intrest_Tracker("NIFTY FIN SERVICE")
-  //     update_chart_set_interval()
-  //   }
-  // }, 180000);
+  // Start the initial scheduling
+  schedulePrint();
 })
