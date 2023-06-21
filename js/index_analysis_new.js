@@ -1,4 +1,4 @@
-root = "https://apii.tradingcafeindia.com/api"
+root = "https://students.tradingcafeindia.com/tc_indicator"
 root_dhan = "https://tredcode.tradingcafeindia.com/dhan"
 
 // Check Access API
